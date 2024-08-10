@@ -10,7 +10,7 @@ import UIKit
 
 class GalleryCollectionViewLayout: UICollectionViewLayout {
     
-    private var cache: [UICollectionViewLayoutAttributes] = []
+    private var cache: [GalleryCollectionViewLayoutAttributes] = []
     
     private var contentHeight: CGFloat {
         collectionView?.contentSize.height ?? 0

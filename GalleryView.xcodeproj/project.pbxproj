@@ -20,6 +20,7 @@
 		761FDFC92C668F310070EC65 /* GalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FDFC82C668F310070EC65 /* GalleryCollectionViewCell.swift */; };
 		761FDFCB2C6693E90070EC65 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FDFCA2C6693E90070EC65 /* UIColor+Extension.swift */; };
 		761FDFCD2C6693F50070EC65 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FDFCC2C6693F50070EC65 /* UIView+Extension.swift */; };
+		761FDFD02C6713360070EC65 /* GalleryCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FDFCF2C6713360070EC65 /* GalleryCollectionViewLayoutAttributes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		761FDFC82C668F310070EC65 /* GalleryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewCell.swift; sourceTree = "<group>"; };
 		761FDFCA2C6693E90070EC65 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		761FDFCC2C6693F50070EC65 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		761FDFCF2C6713360070EC65 /* GalleryCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 		761FDF912C668B890070EC65 /* GalleryView */ = {
 			isa = PBXGroup;
 			children = (
+				761FDFCE2C6713260070EC65 /* LayoutAttributes */,
 				761FDFC52C668BE30070EC65 /* Cells */,
 				761FDFC42C668BDD0070EC65 /* Helpers */,
 				761FDFC32C668BD80070EC65 /* Layouts */,
@@ -169,6 +172,14 @@
 				761FDFC82C668F310070EC65 /* GalleryCollectionViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		761FDFCE2C6713260070EC65 /* LayoutAttributes */ = {
+			isa = PBXGroup;
+			children = (
+				761FDFCF2C6713360070EC65 /* GalleryCollectionViewLayoutAttributes.swift */,
+			);
+			path = LayoutAttributes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,6 +315,7 @@
 			files = (
 				761FDF972C668B890070EC65 /* GalleryViewController.swift in Sources */,
 				761FDFCD2C6693F50070EC65 /* UIView+Extension.swift in Sources */,
+				761FDFD02C6713360070EC65 /* GalleryCollectionViewLayoutAttributes.swift in Sources */,
 				761FDFC92C668F310070EC65 /* GalleryCollectionViewCell.swift in Sources */,
 				761FDF932C668B890070EC65 /* AppDelegate.swift in Sources */,
 				761FDFCB2C6693E90070EC65 /* UIColor+Extension.swift in Sources */,
