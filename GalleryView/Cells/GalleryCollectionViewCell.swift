@@ -9,9 +9,7 @@ import Foundation
 import UIKit
 
 class GalleryCollectionViewCell: UICollectionViewCell {
-    
-    private var containerColor: UIColor = UIView.colors.randomElement() ?? .blue
-        
+            
     static var identifier: String {
         String(describing: GalleryCollectionViewCell.self)
     }
@@ -20,8 +18,6 @@ class GalleryCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 18
-        let randomColor = UIView.colors.randomElement()
-        view.backgroundColor = containerColor
         return view
     }()
     
