@@ -65,4 +65,35 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         
         return cache.filter { $0.frame.intersects(rect) }
     }
+    
+    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        guard let collectionView = collectionView else {
+            return proposedContentOffset
+        }
+        
+        // Define current rectangle in view at the point scrolling stops
+        // Proposed content offset is the guestimation based on the velocity where the collection view will stop scrolling
+        let targetRect = CGRect(x: proposedContentOffset.x, y: 0, width: collectionView.bounds.width, height: collectionView.bounds.height)
+        
+        // Get the layout attributes for all the cells in the visible rect
+        guard let layoutAttributes = layoutAttributesForElements(in: targetRect) else {
+            return proposedContentOffset
+        }
+        
+        // Gives us the center of the cell we end on relative to the collection view size ... having trouble visualizing this
+        let horizontalCenter = proposedContentOffset.x + (collectionView.bounds.width / 2)
+        
+        var closestAttribute: UICollectionViewLayoutAttributes?
+        
+        for attributes in layoutAttributes {
+            if closestAttribute == nil || abs(attributes.center.x - horizontalCenter) < abs(closestAttribute!.center.x - horizontalCenter) {
+                closestAttribute = attributes
+            }
+        }
+        
+        guard let closestAttribute = closestAttribute else { return proposedContentOffset }
+        
+        let targetOffsetX = closestAttribute.center.x - (collectionView.bounds.width / 2)
+        return CGPoint(x: targetOffsetX, y: proposedContentOffset.y)
+    }
 }
