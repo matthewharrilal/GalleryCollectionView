@@ -59,24 +59,35 @@ extension GalleryViewController: UICollectionViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard
             let collectionView = scrollView as? UICollectionView,
-            let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout,
-            let visibleAttributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: collectionView.bounds),
-            let firstVisibleAttribute = visibleAttributes.first,
-            let lastVisibleAttribute = visibleAttributes.last
+            let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout
         else { return }
         
-        let visibleWidth = collectionView.bounds.width
-        let offsetX = collectionView.contentOffset.x
+        // Calculate the center point of the collection view
+        let centerX = collectionView.bounds.width / 2 + collectionView.contentOffset.x
         
-        let delta = offsetX / (layout.visibleContentWidth - visibleWidth)
+        // Get the visible rect of the collection view
+        let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
         
-        guard
-            let firstColor = (firstVisibleAttribute as? GalleryCollectionViewLayoutAttributes)?.containerColor,
-            let secondColor = (lastVisibleAttribute as? GalleryCollectionViewLayoutAttributes)?.containerColor
-        else { return }
+        // Get the attributes for all cells in the visible rect
+        guard let visibleAttributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: visibleRect) else { return }
         
-        // Interpolate the color based on the scroll position
-        let blendedColor = UIColor.blendColor(from: firstColor, to: secondColor, percentage: delta)
-        collectionView.backgroundColor = blendedColor
+        // Find the attribute that is closest to the center of the collection view
+        var closestAttribute: UICollectionViewLayoutAttributes?
+        var minimumDistance = CGFloat.greatestFiniteMagnitude
+        
+        for attribute in visibleAttributes {
+            let distance = abs(attribute.center.x - centerX)
+            if distance < minimumDistance {
+                minimumDistance = distance
+                closestAttribute = attribute
+            }
+        }
+        
+        // If a closest attribute was found, update the background color
+        if let closestAttribute = closestAttribute as? GalleryCollectionViewLayoutAttributes {
+            UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseInOut]) {
+                collectionView.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.6)
+            }
+        }
     }
 }

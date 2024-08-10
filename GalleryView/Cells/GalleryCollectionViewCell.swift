@@ -30,6 +30,14 @@ class GalleryCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.apply(layoutAttributes)
+        
+        guard let layoutAttributes = layoutAttributes as? GalleryCollectionViewLayoutAttributes else { return }
+        
+        containerView.backgroundColor = layoutAttributes.containerColor
+    }
 }
 
 private extension GalleryCollectionViewCell {
