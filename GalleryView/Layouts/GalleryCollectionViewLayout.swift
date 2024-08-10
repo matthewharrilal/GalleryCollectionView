@@ -18,6 +18,11 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
 
     private var contentWidth: CGFloat = 0
     
+    // Computed property to expose contentWidth as read-only
+    public var visibleContentWidth: CGFloat {
+        return contentWidth
+    }
+    
     override func prepare() {
         super.prepare()
         
@@ -38,13 +43,14 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         for item in 0..<numberOfItems {
             let indexPath = IndexPath(item: item, section: numberOfSections - 1)
             
-            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            let attributes = GalleryCollectionViewLayoutAttributes(forCellWith: indexPath)
             
             let frame = CGRect(x: xOffset + (CGFloat(item) * spacing), y: yOffset, width: itemSize.width, height: itemSize.height)
             
             xOffset += itemSize.width
             attributes.frame = frame
-            
+            attributes.containerColor = UIView.colors.randomElement()
+
             cache.append(attributes)
             contentWidth = frame.maxX
         }
@@ -94,6 +100,7 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         guard let closestAttribute = closestAttribute else { return proposedContentOffset }
         
         let targetOffsetX = closestAttribute.center.x - (collectionView.bounds.width / 2)
+        
         return CGPoint(x: targetOffsetX, y: proposedContentOffset.y)
     }
 }

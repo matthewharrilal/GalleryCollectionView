@@ -13,6 +13,7 @@ class GalleryViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.register(GalleryCollectionViewCell.self, forCellWithReuseIdentifier: GalleryCollectionViewCell.identifier)
         return collectionView
     }()
@@ -50,5 +51,32 @@ extension GalleryViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryCollectionViewCell.identifier, for: indexPath) as? GalleryCollectionViewCell else { return UICollectionViewCell() }
         
         return cell
+    }
+}
+
+extension GalleryViewController: UICollectionViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard
+            let collectionView = scrollView as? UICollectionView,
+            let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout,
+            let visibleAttributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: collectionView.bounds),
+            let firstVisibleAttribute = visibleAttributes.first,
+            let lastVisibleAttribute = visibleAttributes.last
+        else { return }
+        
+        let visibleWidth = collectionView.bounds.width
+        let offsetX = collectionView.contentOffset.x
+        
+        let delta = offsetX / (layout.visibleContentWidth - visibleWidth)
+        
+        guard
+            let firstColor = (firstVisibleAttribute as? GalleryCollectionViewLayoutAttributes)?.containerColor,
+            let secondColor = (lastVisibleAttribute as? GalleryCollectionViewLayoutAttributes)?.containerColor
+        else { return }
+        
+        // Interpolate the color based on the scroll position
+        let blendedColor = UIColor.blendColor(from: firstColor, to: secondColor, percentage: delta)
+        collectionView.backgroundColor = blendedColor
     }
 }
