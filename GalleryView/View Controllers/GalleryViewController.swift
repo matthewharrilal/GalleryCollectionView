@@ -120,7 +120,7 @@ extension GalleryViewController: UICollectionViewDelegate {
         
         // If a closest attribute was found, update the background color
         if let closestAttribute = closestAttribute as? GalleryCollectionViewLayoutAttributes {
-            UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseInOut]) {
+            UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseInOut]) {
                 collectionView.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.3)
             }
         }
