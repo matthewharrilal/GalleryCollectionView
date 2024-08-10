@@ -75,7 +75,16 @@ extension GalleryViewController: UICollectionViewDelegate {
         var closestAttribute: UICollectionViewLayoutAttributes?
         var minimumDistance = CGFloat.greatestFiniteMagnitude
         
+        
+        // As the user scrolls:
+        // - The distance between the center of the cell (attribute.center.x) and
+        //   the center of the viewable width (centerX) gets smaller.
+        // - This smaller distance updates the `distance` variable, qualifying
+        //   this cell (attribute) to be the new closest-to-center cell.
+        // - Consequently, the color of the collection view background changes
+        //   to match the color of this closest-to-center cell.
         for attribute in visibleAttributes {
+            
             let distance = abs(attribute.center.x - centerX)
             if distance < minimumDistance {
                 minimumDistance = distance
