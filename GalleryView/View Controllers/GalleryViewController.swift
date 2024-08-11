@@ -107,7 +107,7 @@ extension GalleryViewController: UICollectionViewDelegate {
         // - Consequently, the color of the collection view background changes
         //   to match the color of this closest-to-center cell.
         for attribute in visibleAttributes {
-            let distance = abs(attribute.center.x - centerX)
+            let distance = abs(attribute.center.x - collectionView.bounds.midX)
             
             if distance < minimumDistance {
                 minimumDistance = distance

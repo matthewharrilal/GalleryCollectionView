@@ -72,13 +72,35 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         super.layoutAttributesForElements(in: rect)
+        guard let collectionView = collectionView else { return cache }
         
-        return cache.filter { $0.frame.intersects(rect) }
+        let centerX = collectionView.bounds.midX + collectionView.contentOffset.x
+        let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
+        
+        let attributesArray = cache.filter { $0.frame.intersects(visibleRect) }
+        
+        for attributes in attributesArray {
+            let distanceFromCenter = abs(attributes.center.x - collectionView.bounds.midX)
+            let maxDistance = collectionView.bounds.width / 2
+            let normalizedDistance = min(distanceFromCenter / maxDistance, 1.0)
+            
+            // Scale between 0.75 and 1.0
+            let scaleFactor = 0.75 + (0.25 * (1.0 - normalizedDistance))
+            attributes.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+        }
+        
+        return attributesArray
+        
+//        return cache.filter { $0.frame.intersects(rect) }
     }
     
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         let pageWidth = Constants.itemSize.width + Constants.spacing
         let proposedPage = round(proposedContentOffset.x / pageWidth)
         return CGPoint(x: proposedPage * pageWidth, y: proposedContentOffset.y)
+    }
+    
+    override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        true
     }
 }
