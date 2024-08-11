@@ -95,9 +95,7 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
             attributes.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
         }
         
-        return attributesArray
-        
-//        return cache.filter { $0.frame.intersects(rect) }
+        return attributesArray        
     }
     
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
