@@ -63,7 +63,7 @@ private extension GalleryViewController {
 extension GalleryViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        30
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -93,12 +93,11 @@ extension GalleryViewController: UICollectionViewDelegate {
         let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
         
         // Get the attributes for all cells in the visible rect
-        guard let visibleAttributes = collectionView.collectionViewLayout.layoutAttributesForElements(in: visibleRect) else { return }
+        guard let visibleAttributes = layout.layoutAttributesForElements(in: visibleRect) else { return }
         
         // Find the attribute that is closest to the center of the collection view
         var closestAttribute: UICollectionViewLayoutAttributes?
-        var minimumDistance = CGFloat.greatestFiniteMagnitude
-        
+        var minimumDistance: CGFloat = 30
         
         // As the user scrolls:
         // - The distance between the center of the cell (attribute.center.x) and
@@ -108,19 +107,16 @@ extension GalleryViewController: UICollectionViewDelegate {
         // - Consequently, the color of the collection view background changes
         //   to match the color of this closest-to-center cell.
         for attribute in visibleAttributes {
-            
             let distance = abs(attribute.center.x - centerX)
+            
             if distance < minimumDistance {
                 minimumDistance = distance
                 closestAttribute = attribute
             }
         }
         
-        // Touch Events vs. Animations: Touch events (e.g., scrolling) are processed immediately, while animations are scheduled for the next run loop iteration.
-        
-        // If a closest attribute was found, update the background color
         if let closestAttribute = closestAttribute as? GalleryCollectionViewLayoutAttributes {
-            UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseInOut]) {
+            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveLinear]) {
                 collectionView.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.3)
             }
         }
