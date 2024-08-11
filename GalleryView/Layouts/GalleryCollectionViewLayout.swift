@@ -16,6 +16,7 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
     }
     
     private var cache: [GalleryCollectionViewLayoutAttributes] = []
+    private var colorCache: [IndexPath: UIColor] = [:]
     
     private var contentHeight: CGFloat {
         collectionView?.contentSize.height ?? 0
@@ -53,7 +54,12 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
             
             xOffset += Constants.itemSize.width
             attributes.frame = frame
-            attributes.containerColor = UIView.colors.randomElement()
+            
+            attributes.containerColor = colorCache[indexPath] ?? {
+                let color = UIView.colors.randomElement()
+                colorCache[indexPath] = color
+                return color
+            }()
 
             cache.append(attributes)
             contentWidth = frame.maxX

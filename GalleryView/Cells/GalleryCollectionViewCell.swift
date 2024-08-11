@@ -35,7 +35,6 @@ class GalleryCollectionViewCell: UICollectionViewCell {
         super.apply(layoutAttributes)
         
         guard let layoutAttributes = layoutAttributes as? GalleryCollectionViewLayoutAttributes else { return }
-        
         containerView.backgroundColor = layoutAttributes.containerColor
     }
 }
