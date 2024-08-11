@@ -139,7 +139,7 @@ extension GalleryViewController: UICollectionViewDelegate {
             }
         }
     }
-    
+        
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         guard
             let collectionView = scrollView as? UICollectionView,
@@ -161,7 +161,7 @@ extension GalleryViewController: UICollectionViewDelegate {
             }
         }
         
-        if let closestAttribute = closestAttribute as? GalleryCollectionViewLayoutAttributes {
+        if let _ = closestAttribute as? GalleryCollectionViewLayoutAttributes {
             titleLabel.text = UIView.singleWordArray.randomElement()
             
             UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseOut]) { [weak self] in                self?.titleLabel.alpha = 1
