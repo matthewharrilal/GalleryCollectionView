@@ -21,6 +21,13 @@ class GalleryCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
+    public var titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -43,6 +50,7 @@ private extension GalleryCollectionViewCell {
     
     func setup() {
         contentView.addSubview(containerView)
+        contentView.addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

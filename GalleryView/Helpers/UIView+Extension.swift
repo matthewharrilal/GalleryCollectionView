@@ -9,6 +9,33 @@ import Foundation
 import UIKit
 
 extension UIView {
+    static var singleWordArray: [String] = [
+        "Apple",
+        "Banana",
+        "Cherry",
+        "Date",
+        "Elderberry",
+        "Fig",
+        "Grape",
+        "Honeydew",
+        "Kiwi",
+        "Lemon",
+        "Mango",
+        "Nectarine",
+        "Orange",
+        "Papaya",
+        "Quince",
+        "Raspberry",
+        "Strawberry",
+        "Tangerine",
+        "Uva",        // Note: "Uva" is the Spanish word for "Grape"
+        "Vanilla",
+        "Watermelon",
+        "Xylocarp",   // A less common word for "Coconut"
+        "Yam",
+        "Zucchini"
+    ]
+    
     static var colors: [UIColor] = [
         UIColor(hex: "FF5733"), // Vivid Orange-Red
         UIColor(hex: "33FF57"), // Bright Lime Green

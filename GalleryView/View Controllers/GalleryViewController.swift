@@ -36,7 +36,20 @@ class GalleryViewController: UIViewController {
         collectionView.register(GalleryCollectionViewCell.self, forCellWithReuseIdentifier: GalleryCollectionViewCell.identifier)
         return collectionView
     }()
-
+    
+    private var titleLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Google"
+        label.textColor = .white
+        if let poppinsFont = UIFont(name: "Poppins-ExtraBold", size: 24) {
+            label.font = poppinsFont
+        } else {
+            label.font = UIFont.systemFont(ofSize: 17) // Fallback if Nunito isn't available
+        }
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -49,12 +62,16 @@ private extension GalleryViewController {
     
     func setup() {
         view.addSubview(collectionView)
+        view.addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            
+            titleLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -UIScreen.main.bounds.height / 5)
         ])
     }
 }
@@ -116,8 +133,38 @@ extension GalleryViewController: UICollectionViewDelegate {
         }
         
         if let closestAttribute = closestAttribute as? GalleryCollectionViewLayoutAttributes {
-            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveLinear]) {
-                collectionView.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.3)
+            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveLinear]) { [weak self] in
+                self?.titleLabel.alpha = 0
+                collectionView.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.2)
+            }
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard
+            let collectionView = scrollView as? UICollectionView,
+            let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout,
+            let visibleAttributes = layout.layoutAttributesForElements(
+                in: CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
+            )
+        else { return }
+        
+        var minimumDistance = CGFloat.greatestFiniteMagnitude
+        var closestAttribute: UICollectionViewLayoutAttributes?
+
+        for attribute in visibleAttributes {
+            let distance = abs(attribute.center.x - collectionView.bounds.midX)
+
+            if distance < minimumDistance {
+                minimumDistance = distance
+                closestAttribute = attribute
+            }
+        }
+        
+        if let closestAttribute = closestAttribute as? GalleryCollectionViewLayoutAttributes {
+            titleLabel.text = UIView.singleWordArray.randomElement()
+            
+            UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseOut]) { [weak self] in                self?.titleLabel.alpha = 1
             }
         }
     }
