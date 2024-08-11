@@ -90,6 +90,16 @@ extension GalleryViewController: UICollectionViewDataSource {
             collectionView.backgroundColor = layoutAttributes.containerColor?.withAlphaComponent(0.6)
         }
         
+        cell.onTap = {
+            if let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout {
+                if layout.style == .compact {
+                    layout.style = .full
+                } else {
+                    layout.style = .compact
+                }
+            }
+        }
+        
         return cell
     }
 }
@@ -163,7 +173,7 @@ extension GalleryViewController: UICollectionViewDelegate {
         
         if let _ = closestAttribute as? GalleryCollectionViewLayoutAttributes {
             titleLabel.text = UIView.singleWordArray.randomElement()
-            
+
             UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseOut]) { [weak self] in                self?.titleLabel.alpha = 1
             }
         }

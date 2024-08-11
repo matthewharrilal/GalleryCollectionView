@@ -9,13 +9,19 @@ import Foundation
 import UIKit
 
 class GalleryCollectionViewCell: UICollectionViewCell {
+    
+    public var onTap: (() -> Void)? {
+        didSet {
+            containerView.onTap = onTap
+        }
+    }
             
     static var identifier: String {
         String(describing: GalleryCollectionViewCell.self)
     }
     
-    private lazy var containerView: UIView = {
-        let view = UIView()
+    private lazy var containerView: ScalableContainerView = {
+        let view = ScalableContainerView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 18
         return view

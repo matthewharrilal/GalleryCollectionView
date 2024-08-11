@@ -15,6 +15,27 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         static let spacing: CGFloat = 25
     }
     
+    enum Style {
+        case compact
+        case full
+        
+        mutating func toggle() {
+            switch self {
+            case .compact:
+                self = .compact
+            case .full:
+                self = .full
+            }
+        }
+    }
+    
+    public var style: Style = .compact {
+        didSet {
+            UIView.animate(withDuration: 0.25) {
+                self.invalidateLayout()
+            }
+        }
+    }
     private var cache: [GalleryCollectionViewLayoutAttributes] = []
     private var colorCache: [IndexPath: UIColor] = [:]
     
@@ -36,7 +57,7 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         
         contentWidth = 0
         cache.removeAll()
-        
+
         
         var xOffset = (UIScreen.main.bounds.width / 2) - (Constants.itemSize.width / 2)
         let yOffset = (UIScreen.main.bounds.height / 2) - (Constants.itemSize.height / 2)
@@ -49,8 +70,8 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
             let indexPath = IndexPath(item: item, section: numberOfSections - 1)
             
             let attributes = GalleryCollectionViewLayoutAttributes(forCellWith: indexPath)
-            
-            let frame = CGRect(x: xOffset + (CGFloat(item) * spacing), y: yOffset, width: Constants.itemSize.width, height: Constants.itemSize.height)
+
+            let frame = CGRect(x: xOffset + (CGFloat(item) * spacing), y:  style == .compact ? yOffset : yOffset - 300, width: Constants.itemSize.width, height: Constants.itemSize.height)
             
             xOffset += Constants.itemSize.width
             attributes.frame = frame
@@ -64,6 +85,10 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
             cache.append(attributes)
             contentWidth = frame.maxX
         }
+    }
+    
+    public func toggleStyle() {
+        style.toggle()
     }
     
     override var collectionViewContentSize: CGSize {

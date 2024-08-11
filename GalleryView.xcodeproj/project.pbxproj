@@ -25,6 +25,7 @@
 		761FDFFF2C68B0050070EC65 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 761FDFED2C68AFF70070EC65 /* Poppins-Bold.ttf */; };
 		761FE0002C68B0080070EC65 /* Poppins-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 761FDFF02C68AFF70070EC65 /* Poppins-BoldItalic.ttf */; };
 		761FE0022C68B00D0070EC65 /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 761FDFF62C68AFF80070EC65 /* Poppins-ExtraBold.ttf */; };
+		761FE0042C68B58B0070EC65 /* ScalableContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FE0032C68B58B0070EC65 /* ScalableContainerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		761FDFF02C68AFF70070EC65 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
 		761FDFF42C68AFF80070EC65 /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
 		761FDFF62C68AFF80070EC65 /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
+		761FE0032C68B58B0070EC65 /* ScalableContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalableContainerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,7 @@
 			children = (
 				761FDFCA2C6693E90070EC65 /* UIColor+Extension.swift */,
 				761FDFCC2C6693F50070EC65 /* UIView+Extension.swift */,
+				761FE0032C68B58B0070EC65 /* ScalableContainerView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				761FDF972C668B890070EC65 /* GalleryViewController.swift in Sources */,
+				761FE0042C68B58B0070EC65 /* ScalableContainerView.swift in Sources */,
 				761FDFCD2C6693F50070EC65 /* UIView+Extension.swift in Sources */,
 				761FDFD02C6713360070EC65 /* GalleryCollectionViewLayoutAttributes.swift in Sources */,
 				761FDFC92C668F310070EC65 /* GalleryCollectionViewCell.swift in Sources */,
