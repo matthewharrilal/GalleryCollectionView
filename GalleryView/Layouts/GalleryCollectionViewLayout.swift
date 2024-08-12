@@ -58,7 +58,6 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         contentWidth = 0
         cache.removeAll()
 
-        
         var xOffset = (UIScreen.main.bounds.width / 2) - (Constants.itemSize.width / 2)
         let yOffset = (UIScreen.main.bounds.height / 2) - (Constants.itemSize.height / 2)
         
@@ -71,13 +70,13 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
             let attributes = GalleryCollectionViewLayoutAttributes(forCellWith: indexPath)
 
             let frame = CGRect(
-                x: xOffset + (CGFloat(item) * Constants.spacing),
-                y:  style == .compact ? yOffset : yOffset - 300,
+                x: xOffset,
+                y:  style == .compact ? yOffset : yOffset - 150,
                 width: Constants.itemSize.width,
                 height: Constants.itemSize.height
             )
             
-            xOffset += Constants.itemSize.width
+            xOffset += Constants.itemSize.width + Constants.spacing
             attributes.frame = frame
             
             attributes.containerColor = colorCache[indexPath] ?? {
@@ -116,15 +115,34 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         for attributes in attributesArray {
             let distanceFromCenter = abs(attributes.center.x - collectionView.bounds.midX)
             let maxDistance = collectionView.bounds.width / 2
+            
+            // Normalize the distance so it ranges from 0 (center) to 1 (edge)
             let normalizedDistance = min(distanceFromCenter / maxDistance, 1.0)
             
-            // Scale between 0.75 and 1.0
-            let scaleFactor = 0.75 + (0.25 * (1.0 - normalizedDistance))
+            // Define the maximum scale adjustment and the minimum scale
+            let maxScaleAdjustment: CGFloat = style == .compact ? 0.25 : 0.50
+            let minimumScale: CGFloat = 0.75
+            
+            // Calculate the scale factor based on the normalized distance
+            // Subtracting normalizedDistance from 1.0 inverts the scaling effect 1 (center) 0 (edge)
+            let scaleFactor = minimumScale + (maxScaleAdjustment * (1.0 - normalizedDistance))
             attributes.transform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+            
+            // Adjust spacing based on the scaled size of the item
+            if style == .full {
+                if attributes.center.x < collectionView.bounds.midX {
+                    // Item is to the left of the center
+                    attributes.center.x -= Constants.spacing * scaleFactor
+                } else if attributes.center.x > collectionView.bounds.midX {
+                    // Item is to the right of the center
+                    attributes.center.x += Constants.spacing * scaleFactor
+                }
+            }
         }
         
-        return attributesArray        
+        return attributesArray
     }
+
     
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         let pageWidth = Constants.itemSize.width + Constants.spacing

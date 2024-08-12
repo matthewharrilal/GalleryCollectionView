@@ -92,11 +92,7 @@ extension GalleryViewController: UICollectionViewDataSource {
         
         cell.onTap = {
             if let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout {
-                if layout.style == .compact {
-                    layout.style = .full
-                } else {
-                    layout.style = .compact
-                }
+                layout.style = layout.style == .compact ? .full : .compact
             }
         }
         
@@ -165,7 +161,7 @@ extension GalleryViewController: UICollectionViewDelegate {
             if distance < minimumDistance {
                 minimumDistance = distance
                 closestAttribute = attribute
-            }
+            }            
         }
         
         if let _ = closestAttribute as? GalleryCollectionViewLayoutAttributes {
@@ -174,5 +170,15 @@ extension GalleryViewController: UICollectionViewDelegate {
             UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseOut]) { [weak self] in                self?.titleLabel.alpha = 1
             }
         }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Enforce compact scrolling to avoid UI issues with spacing between items in full layout
+        guard
+            let collectionView = scrollView as? UICollectionView,
+            let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout
+        else { return }
+        
+        layout.style = .compact
     }
 }
