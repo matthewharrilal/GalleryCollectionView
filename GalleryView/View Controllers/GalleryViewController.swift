@@ -113,9 +113,6 @@ extension GalleryViewController: UICollectionViewDelegate {
             let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout
         else { return }
         
-        // Calculate the center point of the collection view
-        let centerX = collectionView.bounds.width / 2 + collectionView.contentOffset.x
-        
         // Get the visible rect of the collection view
         let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
         

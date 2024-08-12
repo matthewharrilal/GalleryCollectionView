@@ -64,14 +64,18 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         
         let numberOfSections = collectionView.numberOfSections
         let numberOfItems = collectionView.numberOfItems(inSection: numberOfSections - 1)
-        let spacing: CGFloat = Constants.spacing
         
         for item in 0..<numberOfItems {
             let indexPath = IndexPath(item: item, section: numberOfSections - 1)
             
             let attributes = GalleryCollectionViewLayoutAttributes(forCellWith: indexPath)
 
-            let frame = CGRect(x: xOffset + (CGFloat(item) * spacing), y:  style == .compact ? yOffset : yOffset - 300, width: Constants.itemSize.width, height: Constants.itemSize.height)
+            let frame = CGRect(
+                x: xOffset + (CGFloat(item) * Constants.spacing),
+                y:  style == .compact ? yOffset : yOffset - 300,
+                width: Constants.itemSize.width,
+                height: Constants.itemSize.height
+            )
             
             xOffset += Constants.itemSize.width
             attributes.frame = frame
@@ -105,7 +109,6 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         super.layoutAttributesForElements(in: rect)
         guard let collectionView = collectionView else { return cache }
         
-        let centerX = collectionView.bounds.midX + collectionView.contentOffset.x
         let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
         
         let attributesArray = cache.filter { $0.frame.intersects(visibleRect) }
