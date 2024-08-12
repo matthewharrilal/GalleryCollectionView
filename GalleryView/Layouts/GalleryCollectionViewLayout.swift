@@ -106,23 +106,22 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         super.layoutAttributesForElements(in: rect)
-        guard let collectionView = collectionView else { return cache }
+        let visibleAttributes = cache.filter { $0.frame.intersects(rect) }
+
+        guard let collectionView = collectionView else { return visibleAttributes }
         
-        let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
+        let maxDistance = collectionView.bounds.width / 2
         
-        let attributesArray = cache.filter { $0.frame.intersects(visibleRect) }
+        // Define the maximum scale adjustment and the minimum scale
+        let maxScaleAdjustment: CGFloat = style == .compact ? 0.25 : 0.50
+        let minimumScale: CGFloat = 0.75
         
-        for attributes in attributesArray {
+        for attributes in visibleAttributes {
             let distanceFromCenter = abs(attributes.center.x - collectionView.bounds.midX)
-            let maxDistance = collectionView.bounds.width / 2
             
             // Normalize the distance so it ranges from 0 (center) to 1 (edge)
             let normalizedDistance = min(distanceFromCenter / maxDistance, 1.0)
-            
-            // Define the maximum scale adjustment and the minimum scale
-            let maxScaleAdjustment: CGFloat = style == .compact ? 0.25 : 0.50
-            let minimumScale: CGFloat = 0.75
-            
+
             // Calculate the scale factor based on the normalized distance
             // Subtracting normalizedDistance from 1.0 inverts the scaling effect 1 (center) 0 (edge)
             let scaleFactor = minimumScale + (maxScaleAdjustment * (1.0 - normalizedDistance))
@@ -140,7 +139,7 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
             }
         }
         
-        return attributesArray
+        return visibleAttributes
     }
 
     
