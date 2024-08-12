@@ -46,7 +46,7 @@ extension GalleryViewController: UICollectionViewDelegate {
         if let closestAttribute = closestAttribute as? GalleryCollectionViewLayoutAttributes {
             UIView.animate(withDuration: 0.15, delay: 0, options: [.curveLinear]) { [weak self] in
                 collectionView.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.2)
-                self?.galleryDetailsViewController.view.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.2)
+                self?.galleryDetailsViewController.viewColor = closestAttribute.containerColor?.withAlphaComponent(0.2)
             }
         }
     }
@@ -72,12 +72,14 @@ extension GalleryViewController: UICollectionViewDelegate {
             }
         }
         
-        if let _ = closestAttribute as? GalleryCollectionViewLayoutAttributes {
-            titleLabel.text = UIView.singleWordArray.randomElement()
-
-            UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseOut]) { [weak self] in                self?.titleLabel.alpha = 1
-            }
-        }
+        // MARK: TODO Update this
+//        if let _ = closestAttribute as? GalleryCollectionViewLayoutAttributes {
+//            titleLabel.text = UIView.singleWordArray.randomElement()
+//
+//            UIView.animate(withDuration: 0.10, delay: 0, options: [.curveEaseOut]) { [weak self] in 
+//                self?.titleLabel.alpha = 1
+//            }
+//        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

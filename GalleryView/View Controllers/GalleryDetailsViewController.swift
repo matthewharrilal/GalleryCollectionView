@@ -10,9 +10,15 @@ import UIKit
 
 class GalleryDetailsViewController: UIViewController {
     
-    public lazy var viewColor: UIColor = .white {
+    public lazy var viewColor: UIColor? = .white {
         didSet {
             view.backgroundColor = viewColor
+        }
+    }
+    
+    public var layoutStyle: GalleryCollectionViewLayout.Style = .compact {
+        didSet {
+            print("New layout set \(layoutStyle)")
         }
     }
     

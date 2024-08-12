@@ -42,19 +42,6 @@ class GalleryViewController: UIViewController {
         return collectionView
     }()
     
-    public var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Google"
-        label.textColor = .white
-        if let poppinsFont = UIFont(name: "Poppins-ExtraBold", size: 24) {
-            label.font = poppinsFont
-        } else {
-            label.font = UIFont.systemFont(ofSize: 17) // Fallback if Nunito isn't available
-        }
-        return label
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -106,12 +93,13 @@ extension GalleryViewController: UICollectionViewDataSource {
         
         if let layoutAttributes = collectionView.layoutAttributesForItem(at: indexPath) as? GalleryCollectionViewLayoutAttributes, indexPath.item == 0 {
             collectionView.backgroundColor = layoutAttributes.containerColor?.withAlphaComponent(0.2)
-            galleryDetailsViewController.view.backgroundColor = layoutAttributes.containerColor?.withAlphaComponent(0.2)
+            galleryDetailsViewController.viewColor = layoutAttributes.containerColor?.withAlphaComponent(0.2)
         }
         
-        cell.onTap = {
+        cell.onTap = { [weak self] in
             if let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout {
                 layout.style = layout.style == .compact ? .full : .compact
+                self?.galleryDetailsViewController.layoutStyle = layout.style
             }
         }
         
