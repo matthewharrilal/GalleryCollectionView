@@ -45,8 +45,8 @@ extension GalleryViewController: UICollectionViewDelegate {
         
         if let closestAttribute = closestAttribute as? GalleryCollectionViewLayoutAttributes {
             UIView.animate(withDuration: 0.15, delay: 0, options: [.curveLinear]) { [weak self] in
-                self?.titleLabel.alpha = 0
                 collectionView.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.2)
+                self?.galleryDetailsViewController.view.backgroundColor = closestAttribute.containerColor?.withAlphaComponent(0.2)
             }
         }
     }

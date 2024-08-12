@@ -26,6 +26,9 @@
 import UIKit
 
 class GalleryViewController: UIViewController {
+    
+    public lazy var galleryDetailsViewController = GalleryDetailsViewController()
+    private var collectionViewHeightConstraint: NSLayoutConstraint!
 
     private lazy var collectionView: UICollectionView = {
         let layout = GalleryCollectionViewLayout()
@@ -34,10 +37,12 @@ class GalleryViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(GalleryCollectionViewCell.self, forCellWithReuseIdentifier: GalleryCollectionViewCell.identifier)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         return collectionView
     }()
     
-    var titleLabel: UILabel = {
+    public var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Google"
@@ -62,17 +67,30 @@ private extension GalleryViewController {
     
     func setup() {
         view.addSubview(collectionView)
-        view.addSubview(titleLabel)
+        addDetailsViewController()
+        
+        collectionViewHeightConstraint = collectionView.heightAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.height / 1.5)
         
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionViewHeightConstraint,
             
-            titleLabel.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -UIScreen.main.bounds.height / 5)
+            galleryDetailsViewController.view.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
+            galleryDetailsViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            galleryDetailsViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            galleryDetailsViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+    
+    func addDetailsViewController() {
+        addChild(galleryDetailsViewController)
+        
+        galleryDetailsViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(galleryDetailsViewController.view)
+        
+        galleryDetailsViewController.didMove(toParent: self)
     }
 }
 
@@ -87,7 +105,8 @@ extension GalleryViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryCollectionViewCell.identifier, for: indexPath) as? GalleryCollectionViewCell else { return UICollectionViewCell() }
         
         if let layoutAttributes = collectionView.layoutAttributesForItem(at: indexPath) as? GalleryCollectionViewLayoutAttributes, indexPath.item == 0 {
-            collectionView.backgroundColor = layoutAttributes.containerColor?.withAlphaComponent(0.6)
+            collectionView.backgroundColor = layoutAttributes.containerColor?.withAlphaComponent(0.2)
+            galleryDetailsViewController.view.backgroundColor = layoutAttributes.containerColor?.withAlphaComponent(0.2)
         }
         
         cell.onTap = {
