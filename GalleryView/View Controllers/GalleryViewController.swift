@@ -27,11 +27,12 @@ import UIKit
 
 class GalleryViewController: UIViewController {
     
-    public lazy var galleryDetailsViewController = GalleryDetailsViewController()
+    private lazy var layout = GalleryCollectionViewLayout()
+    public lazy var galleryDetailsViewController = GalleryDetailsViewController(layout: layout)
     private var collectionViewHeightConstraint: NSLayoutConstraint!
 
     private lazy var collectionView: UICollectionView = {
-        let layout = GalleryCollectionViewLayout()
+        layout.delegate = self
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self
@@ -104,5 +105,12 @@ extension GalleryViewController: UICollectionViewDataSource {
         }
         
         return cell
+    }
+}
+
+extension GalleryViewController: GalleryCollectionViewLayoutDelegate {
+    
+    func layoutStyleDidUpdate(_ style: GalleryCollectionViewLayout.Style) {
+        // NO-OP
     }
 }

@@ -8,6 +8,10 @@
 import Foundation
 import UIKit
 
+protocol GalleryCollectionViewLayoutDelegate: AnyObject {
+    func layoutStyleDidUpdate(_ style : GalleryCollectionViewLayout.Style)
+}
+
 class GalleryCollectionViewLayout: UICollectionViewLayout {
     
     enum Constants {
@@ -29,8 +33,11 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
         }
     }
     
+    weak var delegate: GalleryCollectionViewLayoutDelegate?
+    
     public var style: Style = .compact {
         didSet {
+            delegate?.layoutStyleDidUpdate(style)
             UIView.animate(withDuration: 0.25) {
                 self.invalidateLayout()
             }
