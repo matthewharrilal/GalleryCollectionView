@@ -78,7 +78,7 @@ class GalleryCollectionViewLayout: UICollectionViewLayout {
 
             let frame = CGRect(
                 x: xOffset,
-                y:  style == .compact ? yOffset : yOffset - 150,
+                y:  style == .compact ? yOffset : yOffset - 200,
                 width: Constants.itemSize.width,
                 height: Constants.itemSize.height
             )

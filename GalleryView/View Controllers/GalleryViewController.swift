@@ -27,12 +27,11 @@ import UIKit
 
 class GalleryViewController: UIViewController {
     
-    private lazy var layout = GalleryCollectionViewLayout()
+    private let layout = GalleryCollectionViewLayout()
     public lazy var galleryDetailsViewController = GalleryDetailsViewController(layout: layout)
     private var collectionViewHeightConstraint: NSLayoutConstraint!
 
     private lazy var collectionView: UICollectionView = {
-        layout.delegate = self
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.dataSource = self
@@ -97,10 +96,10 @@ extension GalleryViewController: UICollectionViewDataSource {
             galleryDetailsViewController.viewColor = layoutAttributes.containerColor?.withAlphaComponent(0.2)
         }
         
-        cell.onTap = { [weak self] in
+        cell.onTap = {
             if let layout = collectionView.collectionViewLayout as? GalleryCollectionViewLayout {
+                layout.delegate = self
                 layout.style = layout.style == .compact ? .full : .compact
-                self?.galleryDetailsViewController.layoutStyle = layout.style
             }
         }
         
@@ -111,6 +110,19 @@ extension GalleryViewController: UICollectionViewDataSource {
 extension GalleryViewController: GalleryCollectionViewLayoutDelegate {
     
     func layoutStyleDidUpdate(_ style: GalleryCollectionViewLayout.Style) {
-        // NO-OP
+        galleryDetailsViewController.layoutStyle = style
+        
+        switch style {
+        case .compact:
+            collectionViewHeightConstraint.constant = UIScreen.main.bounds.height / 1.5
+            break
+        case .full:
+            collectionViewHeightConstraint.constant = UIScreen.main.bounds.height / 2
+            break
+        }
+        
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
     }
 }

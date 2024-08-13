@@ -65,4 +65,8 @@ extension UIView {
         UIColor(hex: "B2DFDB"), // Light Cyan
         UIColor(hex: "FFCC80")  // Light Orange
     ]
+    
+    func addSubviews(views: UIView...) {
+        views.forEach { addSubview($0) }
+    }
 }
