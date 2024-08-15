@@ -16,6 +16,11 @@ class GalleryDetailsViewController: UIViewController {
     private var descriptionLabelCenterXConstraint: NSLayoutConstraint!
     private var descriptionLabelLeadingConstraint: NSLayoutConstraint!
     
+    private var sendButtonLeadingConstraint: NSLayoutConstraint!
+    private var sendButtonTrailingConstraint: NSLayoutConstraint!
+    private var sendButtonHeightConstraint: NSLayoutConstraint!
+    private var sendButtonWidthConstraint: NSLayoutConstraint!
+    
     private let layout: GalleryCollectionViewLayout
     
     public lazy var viewColor: UIColor? = .white {
@@ -126,6 +131,17 @@ class GalleryDetailsViewController: UIViewController {
         return view
     }()
     
+    private lazy var sendButton: ScalableContainerView = {
+        let view = ScalableContainerView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(hex: "F7AEF8")
+        view.layer.cornerRadius = 28
+        view.onTap = { [weak self] in
+            self?.applyTransformationToSendButton()
+        }
+        return view
+    }()
+    
     init(layout: GalleryCollectionViewLayout) {
         self.layout = layout
         super.init(nibName: nil, bundle: nil)
@@ -151,8 +167,13 @@ class GalleryDetailsViewController: UIViewController {
 private extension GalleryDetailsViewController {
     
     func setup() {
-        view.addSubviews(views: titleLabel, descriptionLabel, interactiveCTAView, salesLabel, noSalesYetLabel, floorPriceLabel, priceAmountLabel)
+        view.addSubviews(views: titleLabel, descriptionLabel, interactiveCTAView, salesLabel, noSalesYetLabel, floorPriceLabel, priceAmountLabel, sendButton)
         
+        sendButtonTrailingConstraint = sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30)
+        sendButtonWidthConstraint = sendButton.widthAnchor.constraint(equalToConstant: 56)
+        sendButtonHeightConstraint = sendButton.heightAnchor.constraint(equalToConstant: 56)
+        sendButtonLeadingConstraint = sendButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24)
+
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 30),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
@@ -176,7 +197,12 @@ private extension GalleryDetailsViewController {
             
             priceAmountLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -48),
             priceAmountLabel.topAnchor.constraint(equalTo: floorPriceLabel.bottomAnchor, constant: 10),
-            priceAmountLabel.heightAnchor.constraint(equalToConstant: 28)
+            priceAmountLabel.heightAnchor.constraint(equalToConstant: 28),
+            
+            sendButtonTrailingConstraint,
+            sendButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+            sendButtonWidthConstraint,
+            sendButtonHeightConstraint
         ])
         
         defineConstraintsForFullStyle()
@@ -230,6 +256,17 @@ private extension GalleryDetailsViewController {
         }
         
         UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseOut]) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
+    }
+    
+    func applyTransformationToSendButton() {
+        sendButtonTrailingConstraint.constant = -24
+        sendButtonWidthConstraint.isActive = false
+        sendButtonLeadingConstraint.isActive = true
+        sendButtonHeightConstraint.constant = 66
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1.2, options: [.curveEaseOut]) { [weak self] in
             self?.view.layoutIfNeeded()
         }
     }
